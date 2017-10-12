@@ -13,13 +13,15 @@ source("C://Users//chris//OneDrive//Documentos//GitHub//photinus-analytics//load
 dataf =loadAnswers();
 summary(dataf)
 
+dataf$Worker.profession <- as.numeric(dataf$Worker.profession)
 
-
-featuresdf<- data.frame(dataf$Answer.duration,dataf$Answer.confidence,dataf$Answer.difficulty,stri_length(dataf$Answer.explanation), 
-                        dataf$Worker.age,dataf$Worker.score,dataf$Worker.yearsOfExperience,
+featuresdf<- data.frame(dataf$Answer.duration_seconds,dataf$Answer.confidence,dataf$Answer.difficulty,
+                        stri_length(dataf$Answer.explanation), 
+                        dataf$Worker.age,dataf$Worker.score,dataf$Worker.yearsOfExperience,dataf$Worker.profession,
                         dataf$Code.LOC,dataf$Code.complexity);
+
 colnames(featuresdf) <- c("Answer.duration","Answer.confidence","Answer.difficulty","Answer.explanationSize", 
-                          "Worker.age","Worker.score","Worker.yearsOfExperience",
+                          "Worker.age","Worker.score","Worker.yearsOfExperience","Worker.profession",
                           "Code.LOC","Code.complexity");
 featuresM<- data.matrix(featuresdf) #rcorr requires a matrix
 
@@ -30,3 +32,8 @@ corOutput$r
 
 #p-values
 corOutput$P
+
+write.csv(corOutput$r,"C://Users//chris//OneDrive//Documentos//GitHub//correlations.csv");
+write.csv(corOutput$P,"C://Users//chris//OneDrive//Documentos//GitHub//pvalues.csv");
+
+
